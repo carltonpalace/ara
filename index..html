@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Share Your Experience at The Carlton Palace</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            max-width: 400px;
+            width: 90%;
+        }
+        h1 {
+            text-align: center;
+            font-size: 20px;
+            color: #2c3e50;
+        }
+        p.tip {
+            background: #f1fdf4;
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 14px;
+            color: #2c3e50;
+            margin: 15px 0;
+            text-align: center;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            font-size: 16px;
+            border: none;
+            border-radius: 10px;
+            margin: 10px 0;
+            cursor: pointer;
+            color: white;
+            font-weight: bold;
+            position: relative;
+        }
+        .restaurant { background-color: #ff6f4e; }
+        .hotel { background-color: #2980b9; }
+        .google { background-color: #27ae60; }
+        button:hover { opacity: 0.9; }
+        .copied {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px;
+            color: #27ae60;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Share Your Experience at The Carlton Palace</h1>
+    <p class="tip">Tap a button — a ready review will be copied. Then paste it on Google to submit.</p>
+
+    <button class="restaurant" onclick="copyReview(restaurantReviews, this)">
+        🍽 Restaurant Review <span class="copied">Copied!</span>
+    </button>
+    
+    <button class="hotel" onclick="copyReview(hotelReviews, this)">
+        🏨 Hotel Review <span class="copied">Copied!</span>
+    </button>
+    
+    <button class="google" onclick="window.open(reviewLink, '_blank')">
+        ⭐ Leave a Review
+    </button>
+</div>
+
+<script>
+    const reviewLink = "https://www.google.com/travel/search?q=the%20carlton%20palace%20ara&g2lb=4965990%2C4969803%2C72302247%2C72317059%2C72414906%2C72471280%2C72472051%2C72485658%2C72560029%2C72573224%2C72616120%2C72647020%2C72648289%2C72686036%2C72760082%2C72803964%2C72832976%2C72882230%2C72958624%2C72959983%2C72990342%2C73059273&hl=en-IN&gl=in&ssta=1&ts=CAEaRwopEicyJTB4Mzk4ZDVmYTFhYjk3YTU2NzoweDE0MTE3Njc4NTg3NzE0N2USGhIUCgcI6Q8QCBgMEgcI6Q8QCBgNGAEyAhAA&qs=CAEyE0Nnb0lfcWpjdzRYUDNZZ1VFQUU4AkIJCX4Ud1h4dhEUQgkJfhR3WHh2ERQ&ap=ugEHcmV2aWV3cw&ictx=111&ved=0CAAQ5JsGahcKEwiY8YuM24SPAxUAAAAAHQAAAAAQDA";
+
+    const restaurantReviews = [
+        "The food here was absolutely delicious! Highly recommended.",
+        "Amazing taste and quick service. Loved the ambiance.",
+        "Fresh ingredients, great flavors, and friendly staff!"
+    ];
+
+    const hotelReviews = [
+        "A very comfortable and pleasant stay. Highly recommended.",
+        "Rooms were clean and staff was very polite.",
+        "Excellent hospitality and beautiful interiors."
+    ];
+
+    let usedRestaurantReviews = [];
+    let usedHotelReviews = [];
+
+    function copyReview(reviewsArray, buttonElement) {
+        let usedArray = (reviewsArray === restaurantReviews) ? usedRestaurantReviews : usedHotelReviews;
+
+        if (usedArray.length === reviewsArray.length) {
+            usedArray.length = 0; // reset when all used
+        }
+
+        let unusedReviews = reviewsArray.filter(r => !usedArray.includes(r));
+        const randomReview = unusedReviews[Math.floor(Math.random() * unusedReviews.length)];
+        usedArray.push(randomReview);
+
+        navigator.clipboard.writeText(randomReview).then(() => {
+            const copiedText = buttonElement.querySelector('.copied');
+            copiedText.style.display = 'inline';
+            setTimeout(() => copiedText.style.display = 'none', 1500);
+        });
+    }
+</script>
+
+</body>
+</html>
+
